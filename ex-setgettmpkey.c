@@ -16,12 +16,19 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+/* 380 = sys_settmpkey(int key, char* value, unsigned int lifespan) */
+/* 381 = sys_gettmpkey(int key, int n, char* value) */
+
 int main() {
    int sc;
-   
-   sc = syscall(380); 
+   char *value = "teste"
+
+   sc = syscall(380, 1, value, 10); 
    printf("Retorno da chamada sys_settmpkey: %d.\n", sc);
-   sc = syscall(381);
+
+   sc = syscall(381, 2, 5, value);
    printf("Retorno da chamada sys_gettmpkey: %d.\n", sc);
+   printf("%s\n", value);
+
    return sc;
 }
