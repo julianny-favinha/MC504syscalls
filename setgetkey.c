@@ -26,8 +26,8 @@
 typedef struct node {
 	char * value;
 	int key; 
-	int lifeT; // Total Lifespan
-	int lifeS; // Inicio Lifespan
+	unsigned int lifeT; // Total Lifespan
+	unsigned int lifeS; // Inicio Lifespan
 	struct node *next;
 } Node, * ImplNode;
 
@@ -51,6 +51,7 @@ ImplNode createNode(int key, char *value, int lifespan){
 	return newNode;
 }
 
+// TODO: Quando será falso?
 int insertToHash(int key, char *value, int lifespan){
 	int hashIndex = key % eleCount;
 	ImplNode newNode = createNode(key, value, lifespan);
@@ -115,14 +116,19 @@ char * getValue(int key){
 }
 
 asmlinkage long sys_settmpkey(int key, char* value, unsigned int lifespan){
-	//TODO: para o value: userspace -> kernelspace
-	return insertToHash(key, value, lifespan);
+	char * valueK;
+
+	strncpy_from_user(valueK, value, strnlen_user( value, 10));
+	return insertToHash(key, valueK, lifespan);
 }
 
 asmlinkage long sys_gettmpkey(int key, int n, char* value){
-	//TODO: para o value: kernelspace -> userspace
-	//TODO: limitar pelo n? Não entendi esse n
-	value = getValue(key);
+	char * valueK = getValue(key);
+	if (!valueK)
+		return -1;
+	copy_to_user(value, valueK, n);
+	return 0;
 }
 
 //TODO: testar funções no mesmo arquivo
+//TODO: remover bugs
