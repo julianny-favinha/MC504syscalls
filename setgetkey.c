@@ -46,7 +46,7 @@ ImplNode createNode(int key, char *value, int lifespan){
 	newNode->key = key;
 	strcpy(newNode->value, value);
 	newNode->lifeT = lifespan;
-	newNode->lifeS = // TODO: tempo atual?
+	newNode->lifeS = jiffies/HZ;
 	newNode->next = NULL;
 	return newNode;
 }
@@ -102,7 +102,7 @@ char * getValue(int key){
 
 	while(myNode != NULL){
 		if(myNode->key == key) {
-			if(myNode->lifeS + time >= myNode->lifeT) // TODO: tempo atual?
+			if(jiffies/HZ - myNode->lifeS >= myNode->lifeT)
 				deleteFromHash(myNode->key); // Tempo esgotado
 			else 
 				value = myNode->value; // Existe
