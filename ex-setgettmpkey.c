@@ -26,7 +26,7 @@ int main() {
    sc = syscall(380, 1, value, 10); 
    printf("Retorno da chamada sys_settmpkey: %d.\n", sc);
 
-   sc = syscall(381, 2, 5, value);
+   sc = syscall(381, 1, 6, value);
    printf("Retorno da chamada sys_gettmpkey: %d.\n", sc);
    printf("%s\n", value);
 
