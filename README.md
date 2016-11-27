@@ -20,13 +20,13 @@ MC504syscalls/linux-4.8.8/arch/x86/entry/syscalls/syscall_32.tbl
 
 MC504syscalls/linux-4.8.8/include/linux/syscalls.h
 
-### (381) settmpkey's function
+### (380) settmpkey's function
 
-MC504syscalls/linux-4.8.8/arch/x86/kernel/settmpkey.c
+MC504syscalls/linux-4.8.8/arch/x86/kernel/setgetkey.c
 
-### (382) gettmpkey's function
+### (381) gettmpkey's function
 
-MC504syscalls/linux-4.8.8/arch/x86/kernel/gettmpkey.c
+MC504syscalls/linux-4.8.8/arch/x86/kernel/getgetkey.c
 
 ### Makefile
 
