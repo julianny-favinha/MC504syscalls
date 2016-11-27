@@ -21,7 +21,7 @@
 
 int main() {
    int sc;
-   char *value = "teste"
+   char *value = "teste";
 
    sc = syscall(380, 1, value, 10); 
    printf("Retorno da chamada sys_settmpkey: %d.\n", sc);
