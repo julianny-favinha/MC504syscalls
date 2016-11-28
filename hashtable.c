@@ -2,13 +2,14 @@
 #include <linux/jiffies.h> // Constantes jiffies e HZ
 #include "hashtable.h"
 
-int eleCount = 20; 
+int eleCount = 20; // Número de chaves na Table
 ImplHash hashTable = NULL;
 
+// Cria novo nó para lista
 ImplNode createNode(int key, char *value, int lifespan){
 	ImplNode newNode;
 
-	newNode = (ImplNode) kmalloc(sizeof(Node));
+	newNode = (ImplNode) kmalloc(sizeof(Node), GFP_KERNEL);
 	newNode->key = key;
 	strcpy(newNode->value, value);
 	newNode->lifeT = lifespan;
@@ -17,7 +18,7 @@ ImplNode createNode(int key, char *value, int lifespan){
 	return newNode;
 }
 
-// TODO: Quando será falso?
+// Insere na table na cabeça da lista
 int insertToHash(int key, char *value, int lifespan){
 	int hashIndex = key % eleCount;
 	ImplNode newNode = createNode(key, value, lifespan);
@@ -32,6 +33,7 @@ int insertToHash(int key, char *value, int lifespan){
 	return 0; // Inseriu 
 }
 
+// Deleta o elemento da lista
 int deleteFromHash(int key){
 	int hashIndex = key % eleCount;
 	ImplNode aux, myNode = hashTable[hashIndex].head;
@@ -58,6 +60,7 @@ int deleteFromHash(int key){
 	return -1; // Não existe
 }
 
+// Busca o valor guardado de uma chave específica, se o tempo for esgotado deleta
 char * getValue(int key){
 	int hashIndex = key % eleCount;
 	ImplNode myNode = hashTable[hashIndex].head;
