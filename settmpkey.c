@@ -17,15 +17,24 @@
 #include <linux/unistd.h>
 #include <linux/linkage.h>
 #include <linux/slab.h> // Biblioteca para kmalloc e kfree
+#include <linux/uaccess.h> // Biblioteca para strncpy_from_user
 #include "hashtable.h"
 
-asmlinkage long sys_settmpkey(int key, char* value, unsigned int lifespan){
-	char * valueK;
+asmlinkage long sys_settmpkey(int key, char *value, unsigned int lifespan) {
+	char *valueK = NULL;
 	
-	if(!hashTable){
-		hashTable = (ImplHash) kmalloc(sizeof(20 * Hash),  GFP_KERNEL);
-	}
+	/* void * kmalloc(size_t size, int flags);
+	 * flag GFP_KERNEL: This is a normal allocation and might block. This is 
+	 * the flag to use in process context code when it is safe to sleep. 
+	 * The kernel will do whatever it has to in order to obtain the memory 
+	 * requested by the caller. This flag should be your first choice. */
+	if (!hashTable)
+		hashTable = (ImplHash) kmalloc(20 * sizeof(ImplHash),  GFP_KERNEL);
+	
+	/* strncpy_from_user retorna zero em caso de sucesso, diferente de 
+	 * zero em caso de falha */
 	if (!strncpy_from_user(valueK, value, strnlen_user(value, 10)))
-		return insertToHash(key, valueK, lifespan);	
+		return insertToHash(key, valueK, lifespan);
+		
 	return -1;
 }

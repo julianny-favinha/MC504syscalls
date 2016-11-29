@@ -17,14 +17,20 @@
 
 #include <linux/unistd.h>
 #include <linux/linkage.h>
-#include <linux/slab.h> // Biblioteca para kmalloc e kfree
+#include <linux/uaccess.h> // Biblioteca para copy_to_user
 #include "hashtable.h"
  
-asmlinkage long sys_gettmpkey(int key, int n, char* value){
-	char * valueK = getValue(key);
+asmlinkage long sys_gettmpkey(int key, int n, char *value) {
+	char *valueK = getValue(key);
+	
 	if (!valueK)
 		return -1;
-	copy_to_user(value, valueK, n);
+	
+	/* copy_to_user retorna zero em caso de sucesso, ou diferente de 
+	 * zero para indicar o número de bytes que não foram transferidos */		
+	if (copy_to_user(value, valueK, n))
+		return -1;
+	
 	return 0;
 }
 
