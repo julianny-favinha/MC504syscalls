@@ -22,11 +22,19 @@ MC504syscalls/linux-4.8.8/include/linux/syscalls.h
 
 ### (380) settmpkey's function
 
-MC504syscalls/linux-4.8.8/arch/x86/kernel/setgetkey.c
+MC504syscalls/linux-4.8.8/arch/x86/kernel/settmpkey.c
 
 ### (381) gettmpkey's function
 
-MC504syscalls/linux-4.8.8/arch/x86/kernel/getgetkey.c
+MC504syscalls/linux-4.8.8/arch/x86/kernel/gettmpkey.c
+
+### Hashtable's function
+
+MC504syscalls/linux-4.8.8/arch/x86/kernel/hashtable.c
+
+### Hashtable's header
+
+MC504syscalls/linux-4.8.8/arch/x86/kernel/hashtable.h
 
 ### Makefile
 
