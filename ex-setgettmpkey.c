@@ -21,17 +21,17 @@
 
 int main() {
    int sc;
-   char *value = "teste", *value2 = "abcde";
-
+   char *value = "teste", *value2 = "abcde", *value3 = malloc(6*sizeof(char));
    sc = syscall(380, 1, value, 10); 
    printf("Retorno da chamada sys_settmpkey: %d.\n", sc);
 
    sc = syscall(380, 2, value2, 10);
    printf("Retorno da 2 chamada sys_settmpkey: %d.\n", sc);
 
-   sc = syscall(381, 1, 6, value2);
+
+   sc = syscall(381, 1, 6, value3);
    printf("Retorno da chamada sys_gettmpkey: %d.\n", sc);
-   printf("%s\n", value2); // resposta esparada : "teste"
+   printf("%s\n", value3); // resposta esparada : "teste"
 
    return sc;
 }
