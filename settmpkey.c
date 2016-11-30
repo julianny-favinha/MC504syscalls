@@ -21,20 +21,25 @@
 #include "hashtable.h"
 
 asmlinkage long sys_settmpkey(int key, char *value, unsigned int lifespan) {
-	char *valueK = NULL;
+	char *valueK;
+    int size;
 	
 	/* void * kmalloc(size_t size, int flags);
 	 * flag GFP_KERNEL: This is a normal allocation and might block. This is 
 	 * the flag to use in process context code when it is safe to sleep. 
 	 * The kernel will do whatever it has to in order to obtain the memory 
 	 * requested by the caller. This flag should be your first choice. */
+    
 	if (!hashTable)
-		hashTable = (ImplHash) kmalloc(20 * sizeof(ImplHash),  GFP_KERNEL);
-	
-	/* strncpy_from_user retorna zero em caso de sucesso, diferente de 
+		hashTable = (ImplHash) kmalloc(20 * sizeof(Hash),  GFP_KERNEL);  
+    
+    size = strnlen_user(value, 10);
+    valueK = (char *) kmalloc(size * sizeof(char), GFP_KERNEL);
+
+    /* strncpy_from_user retorna zero em caso de falha, diferente de 
 	 * zero em caso de falha */
-	if (!strncpy_from_user(valueK, value, strnlen_user(value, 10)))
-		return insertToHash(key, valueK, lifespan);
-		
+	if (strncpy_from_user(valueK, value, size))
+        return insertToHash(key, valueK, lifespan);
+   
 	return -1;
 }

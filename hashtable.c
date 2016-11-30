@@ -21,7 +21,7 @@ ImplNode createNode(int key, char *value, int lifespan) {
 
 	newNode = (ImplNode) kmalloc(sizeof(Node), GFP_KERNEL);
 	newNode->key = key;
-	strcpy(newNode->value, value);
+	newNode->value = value;
 	newNode->lifeT = lifespan;
 	newNode->lifeS = jiffies/HZ;
 	newNode->next = NULL;
@@ -60,6 +60,7 @@ int deleteFromHash(int key) {
 			else
 				aux->next = myNode->next;
 			
+            kfree(myNode->value);
 			kfree(myNode);
 			return 0; // Removeu 
 		}

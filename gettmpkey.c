@@ -30,9 +30,7 @@ asmlinkage long sys_gettmpkey(int key, int n, char *value) {
 	 * zero para indicar o número de bytes que não foram transferidos */		
 	if (copy_to_user(value, valueK, n))
 		return -1;
-	
-	return 0;
-}
+    
+    return 0;
 
-//TODO: testar funções no mesmo arquivo
-//TODO: remover bugs
+}
